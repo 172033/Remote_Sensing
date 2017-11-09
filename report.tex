@@ -1,0 +1,118 @@
+\documentclass[11pt, a4paper]{report}
+
+
+
+% LANGUAGE
+\usepackage[utf8]{inputenc}		% Zeichen in UTF-8 speichern (?)
+\usepackage[T1]{fontenc}		% Sonderzeichen richtig darstellen
+\usepackage[british]{babel}		% versch. Sonderzeichen, Silbentrennung, Gliederung
+\usepackage[autostyle]{csquotes}	% quotation marks
+
+\addto{\captionsbritish}{
+\renewcommand{\figurename}{Fig.}
+\renewcommand{\tablename}{Tab.}
+}
+
+
+
+
+
+% GEOMETRY AND PAGE SETUP
+\usepackage[margin=25mm, top=38mm, headheight=40pt]{geometry}
+					% Ränder
+\usepackage{fancyhdr}			% Kopf- und Fußnoten
+\usepackage{multicol}			% mehrere Spalten
+\usepackage{lastpage}			% Seite x von y
+
+
+\setlength{\parindent}{0pt}		% Absatzanfang nicht einrücken
+\setlength{\columnsep}{8mm}
+\clubpenalty10000			% keine Schusterjungen
+\widowpenalty10000 \displaywidowpenalty = 10000
+					% keine Hurenkinder
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{something}
+\rhead{Page \thepage\ of \pageref{LastPage}}
+
+
+
+
+
+% TABLES AND PICTURES
+\usepackage{tabularx}    		% Tables of specified width
+\usepackage{graphicx}			% Einstellmöglichkeiten für Bilder
+\usepackage{caption}			% Einstellmöglichkeiten Tabellen- und Bildunterschriften, captionof
+\usepackage{array}
+\usepackage{booktabs}
+
+% new column types for tabularx
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X} % X column left aligned
+\newcolumntype{W}{>{\raggedleft\arraybackslash}X}  % X column right aligned
+\newcolumntype{Z}{>{\centering\arraybackslash}X}   % X column centered
+
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+\renewcommand{\arraystretch}{1.2}
+
+
+
+
+
+% MATH
+\usepackage{siunitx}			% SI-Einheiten
+\usepackage{mathtools}			% macht die Matheumgebung, Weiterentwicklung von amsmath
+\usepackage{amssymb}			% Erweiterung des Zeichensatzes, beinhaltet amsfonts
+
+\sisetup{per-mode = symbol}		% Darstellung von Brüchen
+
+
+
+
+
+% MISC
+\usepackage{verbatim}			% macht die "comment-Umgebung"
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}
+
+
+
+
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+{fancy title page}
+\end{titlepage}
+
+
+
+
+
+
+\section{Introduction}
+
+somebody write an introduction
+
+
+
+
+
+\section{Validation of Forward Model}
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
