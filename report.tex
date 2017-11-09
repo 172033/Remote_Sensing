@@ -1,4 +1,4 @@
-\documentclass[11pt, a4paper]{report}
+\documentclass[11pt, a4paper]{article}
 
 
 
@@ -8,10 +8,10 @@
 \usepackage[british]{babel}		% versch. Sonderzeichen, Silbentrennung, Gliederung
 \usepackage[autostyle]{csquotes}	% quotation marks
 
-\addto{\captionsbritish}{
-\renewcommand{\figurename}{Fig.}
-\renewcommand{\tablename}{Tab.}
-}
+%\addto{\captionsbritish}{
+%\renewcommand{\figurename}{Fig.}
+%\renewcommand{\tablename}{Tab.}
+%}
 
 
 
@@ -85,7 +85,7 @@
 
 \begin{titlepage}
 \centering
-{fancy title page}
+{somebody make a fancy title page}
 \end{titlepage}
 
 
@@ -93,20 +93,66 @@
 
 
 
-\section{Introduction}
+\section*{Introduction}
 
-somebody write an introduction
+somebody write an introduction \\
+somebody fix the references
 
+\begin{itemize}
+\item here is where we got the matlab file from: \url{http://www.seaice.dk/exercises/task3/Matlab/FW_funktion2_is.m} (forward model by Dorthe Hofman-Bang)
+\item description of reference data: \url{http://www.seaice.dk/undervisning/Sotiris/SICCI_RRDB_Manual_v2.01_20170717.docx}
+\end{itemize}
 
 
 
 
 \section{Validation of Forward Model}
 
+The forward model computes from a set of ocean and atmosphere parameters the brightness temperatures expected to be measured by a satellite radiometer. The input parameters are listed in Table \ref{tab:input_parameters}, and the output parameters include values for both horizontal and vertical polarization at \SI{6.93}{GHz}, \SI{10.65}{GHz}, \SI{18.70}{GHz}, \SI{23.80}{GHz}, and \SI{36.50}{GHz}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}p{4cm} p{1.8cm}p{2.8cm}p{1.8cm}p{1.8cm}@{}}
+%\toprule
+\tabularnewline
+& \multicolumn{2}{c}{Forward Model} & \multicolumn{2}{c}{Reference Data}
+\tabularnewline
+\cmidrule(r{1em}){2-3} \cmidrule(l{1em}){4-5}
+& Abbrev. & Unit & Abbrev. & Unit
+\tabularnewline
+\midrule
+Ice concentration	& C\_is	& fraction		& ci	& fraction	\\
+MY-fraction		& F\_MY	& fraction		& 	& 		\\
+Ice temperature		& T\_is	& \SI{}{\degreeCelsius}	& istl	& \SI{}{K}	\\
+Water vapour		& V	& \SI{}{mm} (columnar)	& tcwv	& \SI{}{kg/m^2}	\\
+Cloud liquid water	& L	& \SI{}{mm} (columnar)	& tclw	& \SI{}{kg/m^2}	\\
+Wind speed		& W	& \SI{}{m/s}		& ws	& m/s		\\
+Sea surface temperature	& T\_ow	& \SI{}{\degreeCelsius}	& sst	& \SI{}{K}	\\
+\midrule
+\end{tabular}
+\caption{Atmosphere and ocean parameters entered into the forward model}
+\label{tab:input_parameters}
+\end{table}
+
+This forward model was validated by comparing its results to a set of reference data from ESA's ``Sea Ice Climate Change Initiative''. The reference data consists of brightness temperatures at the relevant polarizations and frequencies as measured by the AMSR (?) radiometer mounted on the satellite xyz, and modelled atmosphere and ocean parameters. These parameters were converted as follows to match the units used in the forward model:
+
+\begin{align*}
+[^\circ C] \quad & \leftarrow \quad [K] - 273.15 \\
+[\text{\SI{}{mm}}] \quad & \leftarrow \quad [\text{\SI{}{kg/m^2}}]
+\end{align*}
+
+% the assumption that "mm columnar" is equal to "kg/m2" is taken from here: http://www.remss.com/measurements/atmospheric-water-vapor/
 
 
+we should comment upon:
+\begin{itemize}
+\item calibration differences mentioned in Leif's email
+\item wind direction (several components given in the reference data)
+\item ice temperature layers (several given in the reference data)
+\item MY ice fractions not being given in the reference data
+\end{itemize}
 
-
+somebody put the reference data atmosphere and ocean parameters into the forward model and look what happens
 
 
 \end{document}
