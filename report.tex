@@ -6,7 +6,7 @@
 \usepackage[utf8]{inputenc}		% Zeichen in UTF-8 speichern (?)
 \usepackage[T1]{fontenc}		% Sonderzeichen richtig darstellen
 \usepackage[british]{babel}		% versch. Sonderzeichen, Silbentrennung, Gliederung
-\usepackage[autostyle]{csquotes}	% quotation marks
+%\usepackage[autostyle]{csquotes}	% quotation marks
 
 %\addto{\captionsbritish}{
 %\renewcommand{\figurename}{Fig.}
@@ -123,7 +123,7 @@ The forward model computes from a set of ocean and atmosphere parameters the bri
 \midrule
 Ice concentration	& C\_is	& fraction		& ci	& fraction	\\
 MY-fraction		& F\_MY	& fraction		& 	& 		\\
-Ice temperature		& T\_is	& \SI{}{\degreeCelsius}	& istl	& \SI{}{K}	\\
+Ice temperature		& T\_is	& \SI{}{K}	& istl	& \SI{}{K}	\\
 Water vapour		& V	& \SI{}{mm} (columnar)	& tcwv	& \SI{}{kg/m^2}	\\
 Cloud liquid water	& L	& \SI{}{mm} (columnar)	& tclw	& \SI{}{kg/m^2}	\\
 Wind speed		& W	& \SI{}{m/s}		& ws	& m/s		\\
@@ -134,25 +134,20 @@ Sea surface temperature	& T\_ow	& \SI{}{\degreeCelsius}	& sst	& \SI{}{K}	\\
 \label{tab:input_parameters}
 \end{table}
 
-This forward model was validated by comparing its results to a set of reference data from ESA's ``Sea Ice Climate Change Initiative''. The reference data consists of brightness temperatures at the relevant polarizations and frequencies as measured by the AMSR (?) radiometer mounted on the satellite xyz, and modelled atmosphere and ocean parameters. These parameters were converted as follows to match the units used in the forward model:
+This forward model was validated by comparing its results to a set of reference data from ESA's ``Sea Ice Climate Change Initiative''. The reference data consists of brightness temperatures at the relevant polarizations and frequencies as measured by the AMSR (?) radiometer mounted on the satellite xyz, and modelled atmosphere and ocean parameters. We should comment upon:
 
-\begin{align*}
-[^\circ C] \quad & \leftarrow \quad [K] - 273.15 \\
-[\text{\SI{}{mm}}] \quad & \leftarrow \quad [\text{\SI{}{kg/m^2}}]
-\end{align*}
-
-% the assumption that "mm columnar" is equal to "kg/m2" is taken from here: http://www.remss.com/measurements/atmospheric-water-vapor/
-
-
-we should comment upon:
 \begin{itemize}
+\item \SI{1}{mm} equals \SI{1}{kg/m^2}
 \item calibration differences mentioned in Leif's email
 \item wind direction (several components given in the reference data)
 \item ice temperature layers (several given in the reference data)
 \item MY ice fractions not being given in the reference data
 \end{itemize}
 
-somebody put the reference data atmosphere and ocean parameters into the forward model and look what happens
+% the assumption that "mm columnar" is equal to "kg/m2" is taken from here: http://www.remss.com/measurements/atmospheric-water-vapor/
+
+\ \\
+Tests on individual geocoded points have shown (ok) agreement of the model with the reference data. Somebody program a 2D-image in matlab, or enter at least a table with values to compare.
 
 
 \end{document}
