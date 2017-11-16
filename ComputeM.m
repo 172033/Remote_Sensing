@@ -38,11 +38,11 @@ p5a = p + [0, 0, 0, 0, d5, 0, 0];
 %p5b = p - [0, 0, 0, 0, d5, 0, 0];
 p6a = p + [0, 0, 0, 0, 0, d6, 0];
 %p6b = p - [0, 0, 0, 0, 0, d6, 0];
-p7a = p + [1, 0, 0, 0, 0, 0, d7];
-%p7b = p - [1, 0, 0, 0, 0, 0, d7];
+p7a = p + [0, 0, 0, 0, 0, 0, d7];
+%p7b = p - [0, 0, 0, 0, 0, 0, d7];
 
 
-T_A = [
+T_M = [
 transpose(ComputeT(p1a) - ComputeT(p));
 transpose(ComputeT(p2a) - ComputeT(p));
 transpose(ComputeT(p3a) - ComputeT(p));
@@ -57,11 +57,11 @@ M = zeros([10 7]);
 
 for i = 1:10
    for j = 1:7
-       M(i,j) = T_A(j,i) / (2*D(j));
+       M(i,j) = T_M(j,i) / (D(j));
    end
 end
 
-M % M is being outputted for troubleshooting
+M; % M is being outputted for troubleshooting
 
 
 
