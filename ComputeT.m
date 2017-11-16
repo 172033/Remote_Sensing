@@ -1,13 +1,16 @@
 
 %******************************
-% Forward algorithm
-% References: AMSR Ocean Algorithm; Frank J. Wentz, Thomas Meissner; Remote
-%             Sensing Systems; Version 2; November 2; 2000.
-% Dorthe Hofman-Bang
-% 20th of September 2003
-%*******************************
-% Input: W,V,L,T_s,C_is,F_MY 
-% Output: T_B[[6v, 6h, 10v, 10h, 18v, 18h, 23v, 23h, 37v, 37h]]
+% Forward algorithm programmed by Dorthe Hofmann-Bang
+%
+% INPUT
+%
+% p is a 7 element row vector with values for:
+% wind speed, water vapour, liquid water, sea surface temperature, ice temperature, ice concentration, multiyear ice fraction
+%
+% OUTPUT
+% 
+% T_A is a 10 element column vector with computed values for brightness temperatures:
+% 6.93v, 6.93h, 10.65v, 10.65h, 18.70v, 18.70h, 23.80v, 23.80h, 36.50v, 36.50h
 %*******************************
 
 function[T_A]=ComputeT(p)
