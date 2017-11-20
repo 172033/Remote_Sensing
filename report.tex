@@ -137,18 +137,18 @@ Sea surface temperature	& T\_ow	& \SI{}{\degreeCelsius}	& sst	& \SI{}{K}	\\
 This forward model was validated by comparing its results to a set of reference data from ESA's ``Sea Ice Climate Change Initiative''. The reference data consists of brightness temperatures at the relevant polarizations and frequencies as measured by the AMSR-E and AMSR2 radiometers for a range of geocoded locations at a given time. The measured data sets are paired with numerical wheather predictions for the atmospheric and oceanic parameters at the same geocoded locations at near simultaneous time. \newline
 % Advanced Microwave Scanning Radiometer (AMSR) 
 %The AMSR-E instrument on the NASA satellite EOS Aqua was operational between May 4, 2002 and October 4, 2011, and the AMSR2 instrument mounted on the JAXA satellite GCOM-W1, has been in operation since May 18, 2012. 
-The forward model was developed for the AMSR-E instrument and even though the AMSR-E and AMSR2 instruments are similar, the two instruments are calibrated differently (ref: forbidden paper, find other reference?). We assume that the effect of the calibration difference is negligible, when we use the numerical wheather predictions as input in the forward model in order to compare the output with the AMSR2 measured brightness temperatures. \newline
+The forward model was developed for the AMSR-E instrument and when we use numerical wheather predictions as input in the forward model in order to compare the output with the AMSR2 measured brightness temperatures, we assume that any calibration differences between AMSR-E and AMSR2 are negligible.  \newline
 In order to use the reference data in the forward model it was necesarry to perform unit conversions for the parameters water vapour and cloud liquid water, which were given in the columnar units of $\SI{1}{kg/m^2}$ in the reference data, and have now been converted to $\SI{1}{mm}$, indicating the height of water vapor or cloud liquid water if condensed uniformly across the column \cite{remss}. \newline
-%The reference data does not contain information about all geophysical paramters needed as input in the forward model. The multi-year ice fraction cannot be found in the reference data and will therefore have to be determined by other means.   
+The reference data does not contain information about all geophysical paramters needed as input in the forward model. The multi-year ice fraction cannot be found in the reference data and should therefore be determined by other means. The reference data is divided into two parts, one contains only datapoints from areas of open water for which the ice concentration is zero in which case the MY fraction is also zero. It is therefore possible to test the forward model for the open water datapoints. The other part of the reference data contain datapoints from areas of high ice concentration for which the MY fraction is unknown. We will still attempt to test the forward model for the high ice concentration areas by making an estimate of the MY fraction through a process of trial and error. The idea is to select a location where we have prior information about the MY fraction(...). \newline        
+The wind speed is given in the NWP reference data as a u-component, v-component, and as a composite of the two. (comment/question: where u and v denote zonal and meridional directions respectively?) We have used the composite value for the wind speed as the input in our forward model. (Argumentation!?) (-backscatter as a result of wind speed direction (upwind, downwind, crosswind) sensitive to azimuth angle \cite{Elachi})       
 
-
-\begin{itemize}
-\item \SI{1}{mm} equals \SI{1}{kg/m^2}
-\item calibration differences mentioned in Leif's email
-\item wind direction (several components given in the reference data)
-\item ice temperature layers (several given in the reference data)
-\item MY ice fractions not being given in the reference data
-\end{itemize}
+%\begin{itemize}
+%\item \SI{1}{mm} equals \SI{1}{kg/m^2}
+%\item calibration differences mentioned in Leif's email
+%\item wind direction (several components given in the reference data)
+%\item ice temperature layers (several given in the reference data)
+%\item MY ice fractions not being given in the reference data
+%\end{itemize}
 
 % the assumption that "mm columnar" is equal to "kg/m2" is taken from here: http://www.remss.com/measurements/atmospheric-water-vapor/
 
@@ -161,10 +161,15 @@ Tests on individual geocoded points have shown (ok) agreement of the model with 
 \begin{thebibliography}{99}
 	\bibitem[1]{Dorthe} Dorthe Hofman-Bang, Forward algorithm, September 2003. \newline \url{http://www.seaice.dk/exercises/task3/Matlab/FW_funktion2_is.m} \newline [accessed: 18/11/2017]
 	
+	%\bibitem[]{IOMASAreport} Dorthe Hofman-Bang and Leif Toudal, Estimating Ice, Ocean and Atmospheric Parameters from Polar Regions from AMSR-E Microwave Radiometer Measurements, Danish Center for Remote Sensing, Technical University of Denmark. 
+	
 	\bibitem[2]{Wink2} Round Robin Data Package Manual, Version 2.0/, July 2017. Ref: SICCI SIC RRDP-07-17. \newline
 	\url{http://www.seaice.dk/undervisning/Sotiris/SICCI_RRDB_Manual_v2.01_20170717.docx} [accessed: 18/11/2017]
 	
 	\bibitem[3]{remss} (unit conversion) \url{http://www.remss.com/measurements/atmospheric-water-vapor/} [accessed: 18/11/2017]
+	
+	\bibitem[4]{Elachi}  C. Elachi, Introduction to the Physics and Techniques of Remote Sensing. John Wiley and Sons, 1987. (section 6.5+7.3)
+	%(Hennings reference in his radar altimetry slides for wind speed direction discussion)
 	
 \end{thebibliography}
 
