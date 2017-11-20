@@ -41,17 +41,27 @@ p6a = p + [0, 0, 0, 0, 0, d6, 0];
 p7a = p + [0, 0, 0, 0, 0, 0, d7];
 %p7b = p - [0, 0, 0, 0, 0, 0, d7];
 
+% T_M = [
+% transpose(ComputeT(p1a) - ComputeT(p));
+% transpose(ComputeT(p2a) - ComputeT(p));
+% transpose(ComputeT(p3a) - ComputeT(p));
+% transpose(ComputeT(p4a) - ComputeT(p));
+% transpose(ComputeT(p5a) - ComputeT(p));
+% transpose(ComputeT(p6a) - ComputeT(p));
+% transpose(ComputeT(p7a) - ComputeT(p))
+% ];
+
+T_p = ComputeT(p);
 
 T_M = [
-transpose(ComputeT(p1a) - ComputeT(p));
-transpose(ComputeT(p2a) - ComputeT(p));
-transpose(ComputeT(p3a) - ComputeT(p));
-transpose(ComputeT(p4a) - ComputeT(p));
-transpose(ComputeT(p5a) - ComputeT(p));
-transpose(ComputeT(p6a) - ComputeT(p));
-transpose(ComputeT(p7a) - ComputeT(p))
+transpose(ComputeT(p1a) - T_p);
+transpose(ComputeT(p2a) - T_p);
+transpose(ComputeT(p3a) - T_p);
+transpose(ComputeT(p4a) - T_p);
+transpose(ComputeT(p5a) - T_p);
+transpose(ComputeT(p6a) - T_p);
+transpose(ComputeT(p7a) - T_p)
 ];
-
 
 M = zeros([10 7]);
 
