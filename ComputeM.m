@@ -41,16 +41,6 @@ p6a = p + [0, 0, 0, 0, 0, d6, 0];
 p7a = p + [0, 0, 0, 0, 0, 0, d7];
 %p7b = p - [0, 0, 0, 0, 0, 0, d7];
 
-% T_M = [
-% transpose(ComputeT(p1a) - ComputeT(p));
-% transpose(ComputeT(p2a) - ComputeT(p));
-% transpose(ComputeT(p3a) - ComputeT(p));
-% transpose(ComputeT(p4a) - ComputeT(p));
-% transpose(ComputeT(p5a) - ComputeT(p));
-% transpose(ComputeT(p6a) - ComputeT(p));
-% transpose(ComputeT(p7a) - ComputeT(p))
-% ];
-
 T_p = ComputeT(p);
 
 T_M = [
