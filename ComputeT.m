@@ -12,6 +12,8 @@
 % T_A is a 10 element column vector with computed values for brightness temperatures:
 % 6.93v, 6.93h, 10.65v, 10.65h, 18.70v, 18.70h, 23.80v, 23.80h, 36.50v, 36.50h
 %*******************************
+% Corrections by our Maike, Vaidehi and Naya in line 143-151, imposing
+% conditions on W,V,L
 
 function[T_A]=ComputeT(p)
 
@@ -139,6 +141,16 @@ end
 %     C_is=0;
 % end
 
+% Corrections made by Vaidehi, Maike and Naya
+if V < 0
+    V=0;
+end
+if L < 0 
+    L=0;
+end
+if W < 0
+    W=0;
+end
 
 C_MY=C_is*F_MY; %Multi Year ice concentration
 C_FY=C_is-C_MY; %First Year ice concentration
