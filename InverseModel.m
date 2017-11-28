@@ -10,12 +10,13 @@
 % wind speed, water vapour, liquid water, sea surface temperature, ice temperature, ice concentration, multiyear ice fraction
 %*******************************
 
-function[q]=InverseModel(TB)
-
-% *****start guess for physical parameters using a standard atmosphere*****
+function[q,s]=InverseModel(TB)
+%function[q]=InverseModel(TB)
+% *****start guess for physical parameters using a standard atmosphere from NWP*****
 % (wind speed, water vapour, liquid water, sea surface temperature, ice temperature, ice concentration, multiyear ice fraction)
 
-p0 = [0 5 0 273.15 273.15 0.5 0.5];
+p0 = [6.1327 7.7035 0.0295 273.5503 265.0088 0.5000 0.5000]; 
+%p0 = [0 5 0 273.15 273.15 0.5 0.5]; % first try
 
 % *****amount of perturbation to be applied to the elements of p***********
 
@@ -36,18 +37,29 @@ d7 = 0.01;
 
 % *****variance matrix for the start guess p0******************************
 
+% Sp = [
+% 25 0 0 0 0 0 0;
+% 0 25 0 0 0 0 0;
+% 0 0 0.025 0 0 0 0;
+% 0 0 0 10 0 0 0;
+% 0 0 0 0 25 0 0;
+% 0 0 0 0 0 1 0;
+% 0 0 0 0 0 0 1
+% ];
+
+% Variance matrix for the mean physical parameters calculated from the NWP
 Sp = [
-25 0 0 0 0 0 0;
-0 25 0 0 0 0 0;
-0 0 0.025 0 0 0 0;
-0 0 0 10 0 0 0;
-0 0 0 0 25 0 0;
+9.2865 0 0 0 0 0 0;
+0 62.1415 0 0 0 0 0;
+0 0 0.0056 0 0 0 0;
+0 0 0 22.5386 0 0 0;
+0 0 0 0 98.6461 0 0;
 0 0 0 0 0 1 0;
 0 0 0 0 0 0 1
 ];
 
 % *****variance matrix for the channels of the radiometer******************
-
+% All channels on
 Se = [
 0.16 0 0 0 0 0 0 0 0 0;
 0 0.16 0 0 0 0 0 0 0 0;
@@ -60,6 +72,21 @@ Se = [
 0 0 0 0 0 0 0 0 0.16 0;
 0 0 0 0 0 0 0 0 0 0.16
 ];
+
+% Se that can be varied to exclude channels in analysis 
+% (6.93v, 6.93h, 10.65v, 10.65h, 18.70v, 18.70h, 23.80v, 23.80h, 36.50v, 36.50h)
+% Se = [
+% 10000 0 0 0 0 0 0 0 0 0;
+% 0 10000 0 0 0 0 0 0 0 0;
+% 0 0 10000 0 0 0 0 0 0 0;
+% 0 0 0 10000 0 0 0 0 0 0;
+% 0 0 0 0 0.16 0 0 0 0 0;
+% 0 0 0 0 0 0.16 0 0 0 0;
+% 0 0 0 0 0 0 0.16 0 0 0;
+% 0 0 0 0 0 0 0 10000 0 0;
+% 0 0 0 0 0 0 0 0 0.16 0;
+% 0 0 0 0 0 0 0 0 0 0.16
+% ];
 
 % *****computed stuff******************************************************
 
@@ -77,7 +104,10 @@ for i=1:5
   p = p_new;
 end
 
+S = inv(Spi + M'*Sei*M); % Computing S matrix: error on retrieval from inverse model
+
 q = p;
+s = S;
 
 
 
