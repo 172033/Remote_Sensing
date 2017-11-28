@@ -1,11 +1,11 @@
 
 close all;
-clear all;
+clear;
 
 % ***** READ REFERENCE DATA *****
 
 % number of rows to read:
-nor = 50;
+nor = 1000;
 
 SIC0 = csvread('SIC0_noHeader.csv', 1, 4, [1 4 nor 38]);
 SIC1 = csvread('SIC1_noHeader.csv', 1, 4, [1 4 nor 38]);
@@ -29,12 +29,12 @@ T_SIC1 = [SIC1(:,23) SIC1(:,22) SIC1(:,27) SIC1(:,26) SIC1(:,29) SIC1(:,28) SIC1
 
 % ***** COMPUTE BRIGHTNESS TEMPERATURE VECTORS FROM P USING FORWARD MODEL *****
 
-T0 = zeros(nor,10);
+%T0 = zeros(nor,10);
 T1 = zeros(nor,10);
 
-for i=1:nor
-    T0(i,:)=transpose(ComputeT(P_SIC0(i,:)));
-end
+% for i=1:nor
+%     T0(i,:)=transpose(ComputeT(P_SIC0(i,:)));
+% end
 
 for i=1:nor
     T1(i,:)=transpose(ComputeT(P_SIC1(i,:)));
@@ -43,18 +43,18 @@ end
 
 % ***** DETERMINE THE SIGNED RELATIVE ERROR OF THE COMPUTED BRIGHTNESS TEMPERATURES *****
 
-E0 = zeros(nor,10);
+%E0 = zeros(nor,10);
 E1 = zeros(nor,10);
 
-for i=1:nor
-   for j=1:10 
-       E0(i,j)=(T0(i,j)-T_SIC0(i,j))/T_SIC0(i,j);
-   end
-end
+% for i=1:nor
+%    for j=1:10 
+%        E0(i,j)=(T0(i,j)-T_SIC0(i,j));
+%    end
+% end
 
 for i=1:nor
    for j=1:10 
-       E1(i,j)=(T1(i,j)-T_SIC1(i,j))/T_SIC1(i,j);
+       E1(i,j)=(T1(i,j)-T_SIC1(i,j));
    end
 end
 
@@ -64,25 +64,43 @@ end
 x = linspace(1,10,10);
 
 
+% f1=figure;
+% hold on;
+% for i=1:nor
+%     scatter(x, E0(i,:), 'filled')
+% end
+% hold off;
+% 
+% set(gcf,'units','centimeters','position',[5,5,22,12]);
+% 
+% ylabel('Absolute error in K');
+% xlim([0.5 10.5]);
+% xticklabels({'6.93 v','6.93 h','10.65 v','10.65 h','18.70 v','18.70 h','23.80 v','23.80 h','36.50 v','36.50 h'});
+% xlabel('Channels of the Radiometer');
+% title('Difference of computed and referenced brightness temperatures, SIC=0');
 
-f1=figure;
-hold on;
-for i=1:nor
-    scatter(x, E0(i,:), 'filled')
-end
-hold off;
-
-set(gcf,'units','centimeters','position',[5,5,20,12]);
-
-ylim([-0.4 0.4]);
-yticks([-0.4 -0.3 -0.2 -0.1 0 0.1 0.2 0.3 0.4]);
-ylabel('Relative error');
-xlim([0.5 10.5]);
-xticklabels({'6.93 v','6.93 h','10.65 v','10.65 h','18.70 v','18.70 h','23.80 v','23.80 h','36.50 v','36.50 h'});
-xlabel('Channels of the Radiometer');
-title('Difference of computed and referenced brightness temperatures, SIC=0');
-
-
+% e4=histc(E0(:,4),(-50:50));
+% e5=histc(E0(:,5),(-50:50));
+% e6=histc(E0(:,6),(-50:50));
+% e8=histc(E0(:,8),(-50:50));
+% e10=histc(E0(:,10),(-50:50));
+% 
+% 
+% f1a=figure;
+% hold on;
+% plot((-50:50),e4, 'LineWidth', 1.5);
+% plot((-50:50),e5, 'LineWidth', 1.5);
+% plot((-50:50),e6, 'LineWidth', 1.5);
+% plot((-50:50),e8, 'LineWidth', 1.5);
+% plot((-50:50),e10, 'LineWidth', 1.5);
+% hold off;
+% 
+% set(gcf,'units','centimeters','position',[5,5,22,12]);
+% 
+% xlabel('Absolute error in K');
+% ylabel('Occurence rate');
+% title('Distribution of absolute errors in individual radiometer channels, SIC=0');
+% legend('10.65 h', '18.70 v', '18.70 h', '23.80 h', '36.50 h');
 
 f2=figure
 hold on;
@@ -91,11 +109,9 @@ for i=1:nor
 end
 hold off;
 
-set(gcf,'units','centimeters','position',[5,5,20,12]);
+set(gcf,'units','centimeters','position',[5,5,22,12]);
 
-ylim([-0.4 0.4]);
-yticks([-0.4 -0.3 -0.2 -0.1 0 0.1 0.2 0.3 0.4]);
-ylabel('Relative error');
+ylabel('Absolute error in K');
 xlim([0.5 10.5]);
 xticklabels({'6.93 v','6.93 h','10.65 v','10.65 h','18.70 v','18.70 h','23.80 v','23.80 h','36.50 v','36.50 h'});
 xlabel('Channels of the Radiometer');
