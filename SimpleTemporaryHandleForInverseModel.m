@@ -1,10 +1,13 @@
-
-
 % *****measured brightness temperatures************************************
 % (6.93v, 6.93h, 10.65v, 10.65h, 18.70v, 18.70h, 23.80v, 23.80h, 36.50v, 36.50h)
 
-TB = [160 80 169 86 185 102 196 122 211 140];
 
-p = InverseModel(TB)
+% High ice concentration situation (line 14 in high ice concentration data set)
+% Expected value of p = [4.35 11.9486 0.13957 271.46 273.16 1 -] 
+TB = [228.5 257.63 235.47 260.06 243.71 262.18 251.01 263.94 251.87 262.41]; 
 
-% expected values for the given brightness temperature: [5.04, 3.8445, 0.00144, 278.07, 271.46, 0, 0]
+[p,S] = InverseModel(TB)
+
+
+
+
