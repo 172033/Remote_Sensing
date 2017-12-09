@@ -97,7 +97,6 @@ bl.a. mention
 \begin{itemize}
 \item where we get the forward model from and what it does (this will not be explained in the following section)
 \item that we need the forward model to do the inverse model (which was the actual task)
-\item emphasize that the ref data is from numerical weather predictions and not necessarily correct
 \end{itemize}
 
 
@@ -380,8 +379,7 @@ For each of the radiometer channels, an uncertainty of \SI{0.4}{K} was assumed. 
 
 
 
-\begin{comment}
-\subsection{Validation Procedure}
+\subsection{Validation of Inverse Model}
 
 The inverse model is intended to be an inversion of the forward model. This means that in comparison to any reference, the inverse model can at most be as accurate as the forward model. The inverse model was therefore validated by comparison to the forward model: brightness temperatures for a given set of geophysical parameters were computed by the forward model, these brightness temperatures were entered into the inverse model to compute an estimate of the geophysical parameters (\(p_e\)), and the estimate was then compared to the original set of geophysical parameters (\(p_o\)).
 \newline
@@ -389,59 +387,37 @@ The inverse model is intended to be an inversion of the forward model. This mean
 The reference data sets used to validate the forward model were used as a generic source of geophysical parameters to be inputted into the forward model. They were not used as a reference to compare modelled results to!
 \newline
 
-We chose to describe the error of the inverse model as follows:
+The error of the inverse model is described as follows:
 
 \begin{equation*}
-e = \frac{p_\text{e} - p_\text{o}}{\sigma}
+e = p_\text{e} - p_\text{o}
 \end{equation*}
 
-By normalizing to the standard deviation \(\sigma\), the dependancy of the individual parameters on units is removed. This normalization can be interpreted as adjusting the unit of each parameter such that the original distribution has a standard deviation of 1. For example, an error of 0.5 would then mean a deviation of the estimated parameter by 0.5 times the standard deviation of that parameter when observed on the whole globe and over the course of one year.
-\newline
+The error produced by the inverse model is described in Table \ref{tab:errorinv}.
 
-The normalization to the standard deviation introduces a systematic error source into the validation of the inverse model, because the same data sets that were used to compute the standard deviation were already used for the optimization of this model. The independence of development and validation is thus violated. However, we consider the data base to be broad enough to neglect this error.
-\end{comment}
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{} l l l l l l l @{}}
+Parameter & ws [\SI{}{m/s}] & tcwv [\SI{}{\kilo\gram\per\square\meter}] & tclw [\SI{}{\kilo\gram\per\square\meter}] & sst [\SI{}{K}] & skt [\SI{}{K}] & ci [fraction] \\
+\midrule
+Mean & \SI{-0.3915}{} & \SI{0.0927}{} & \SI{0.0013}{} & \SI{-1.2479}{} & \SI{-20.0575}{} & \SI{0.0236}{} \\
+Std. Dev. & \SI{6.4720}{} & \SI{5.5608}{} & \SI{0.0798}{} & \SI{16.6951}{} & \SI{20.4976}{} & \SI{0.4234}{} \\
+\midrule
+\end{tabular}
+\caption{Estimated parameters compared to the original parameters}
+\label{tab:errorinv}
+\end{table}
+
+
+
+
+
+
+
+
+
 
 \begin{comment}
-- compute new std dev: expect that it becomes larger = the loop creates additional "inconfidence"
-or talk about the distribution of the error? --> histogram with seven lines?
-\end{comment}
-
-\begin{comment}
-\subsection{Validation Results}
-
-The error produced by the inverse model was plotted into separate diagrams for the two ice concentrations, see figures \ref{fig:inv0} and \ref{fig:inv1}. Unfortunately, the accuracy appears to depend on the type of input. To investigate the exact reason for the increased uncertainty for the no ice condition, one could divide the datasets into smaller groups of common latitude, season, or magnitude of input parameters, and then record the error distribution for each subset. However, this has not been done so far, and more reference data might be necessary.
-
-\begin{figure}[h]
-   \centering
-   \includegraphics[width=0.9\textwidth]{ValidationInverse_SIC0.eps}
-   \caption{Error of the computed geophysical parameters for input data from equatorial and mid-latitude regions}
-   \label{fig:inv0}
-\end{figure}
-
-\begin{figure}[h]
-   \centering
-   \includegraphics[width=0.9\textwidth]{ValidationInverse_SIC1.eps}
-   \caption{Error of the computed geophysical parameters for input data from polar regions}
-   \label{fig:inv1}
-\end{figure}
-
-\ \\
-For input data from the no ice condition, some outliers are not being displayed in figure \ref{fig:inv0} in order to keep the scale readable where most of the errors lie. This affects less than \SI{1}{\percent} of the data points in this set. To gain a better understanding of the distribution of the error, which appears particularly broad in this figure, histograms of the error distributions are shown in figure \mbox{\ref{fig:inv1dist}} for the no ice dataset.
-
-\begin{figure}[h]
-   \centering
-   \includegraphics[width=0.9\textwidth]{ValidationInverse_SIC0_errordist.eps}
-   \caption{Distribution of the error of the computed geophysical parameters for input data from equatorial and mid-latitude regions; the data set contains 6988 data points}
-   \label{fig:inv1dist}
-\end{figure}
-
-
-
-
-
-
-
-
 \clearpage
 \section{Application of the Inverse Model}
 
@@ -506,7 +482,6 @@ The computed difference in geophysical parameters, \(\Delta \ p\), comes itself 
 
 \vspace{5cm}
 many interesting and nicely presented findings
-\end{comment}
 
 
 
@@ -518,8 +493,9 @@ many interesting and nicely presented findings
 \item comparison to more data; especially with information about my to validate/adjust inverse model
 \item different Sp, p0 for different latitudes? % upper boundary to Sp values: can only be large, when M large
 \end{itemize}
+\
 
-
+\end{comment}
 
 
 
