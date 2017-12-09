@@ -82,7 +82,7 @@
 
 
 
-\tableofcontents
+%\tableofcontents
 
 
 
@@ -113,7 +113,6 @@ The forward model computes from a set of oceanic and atmospheric parameters the 
 \begin{table}[h!]
 \centering
 \begin{tabular}{@{}p{4cm} p{1.8cm}p{2.8cm}p{1.8cm}p{1.8cm}@{}}
-%\toprule
 \tabularnewline
 & \multicolumn{2}{c}{Forward Model} & \multicolumn{2}{c}{Reference Data}
 \tabularnewline
@@ -139,41 +138,131 @@ This forward model was validated by comparing its results to reference data from
 
 
 \subsection{Description of the Reference Data}
+
+The reference data consists of brightness temperatures at the relevant polarizations and frequencies as measured by the AMSR2 radiometer onboard the GCOM-W1 satellite. The measured data is paired with validated sea ice concentrations and numerical weather predictions for the atmospheric and oceanic parameters at the same geocoded locations at near simultaneous time. There are two different data sets: one with an ice concentration of 0, the other one with an ice concentration of 1. The data points of each set cover the entire year 2014. The dataset with the no ice condition covers latitudes between 5 and 73 degrees, and the dataset with an ice concentration of 1 covers latitudes between 78.5 and 87.5 degrees. A description of the dataset can be found in \cite{Wink2}.
+
+\subsubsection{Potential Sources of Errors}
 \label{sec:RefDat}
-
-The reference data consists of brightness temperatures at the relevant polarizations and frequencies as measured by the AMSR2 radiometer onboard the GCOM-W1 satellite. %for a range of geocoded locations at a given time.
-The measured data is paired with validated sea ice concentrations and numerical weather predictions for the atmospheric and oceanic parameters at the same geocoded locations at near simultaneous time. There are two different data sets: one with an ice concentration of 0, the other one with an ice concentration of 1. The data points of each set cover the entire year 2014. The dataset with the no ice condition covers latitudes between 5 and 73 degrees, and the dataset with an ice concentration of 1 covers latitudes betwwen 78.5 and 87.5 degrees. 
-\newline
-
-When using this reference data package to validate the forward model, several points have to be taken into account: Firstly, the forward model was developed for the AMSR-E instrument. By using the atmospheric and oceanic parameters as input in the forward model in order to compare the output with the AMSR2 measured brightness temperatures, we assume that any calibration differences between AMSR-E and AMSR2 are negligible. % Advanced Microwave Scanning Radiometer (AMSR) 
+When using this reference data package to validate the forward model, several points have to be taken into account: Firstly, the forward model was developed for the AMSR-E instrument. To use the atmospheric and oceanic parameters as input in the forward model in order to compare the output with the AMSR2 measured brightness temperatures, we applied a conversion to these brightness temperatures as suggested in \cite{secret}.
 %The AMSR-E instrument on the NASA satellite EOS Aqua was operational between May 4, 2002 and October 4, 2011, and the AMSR2 instrument mounted on the JAXA satellite GCOM-W1, has been in operation since May 18, 2012. 
 \newline
 
-Secondly, the reference data does not contain information about the multi-year ice fraction needed as input in the forward model. %The multi-year ice fraction cannot be found in the reference data and should therefore be determined by other means. The reference data is divided into two parts, one contains only datapoints from areas of open water for which the ice concentration is zero in which case
-For the data set with an ice concentration of 0, the MY fraction is irrelevant. It is therefore possible to validate the forward model for the open water datapoints. For the data set with an ice concentration of 1, %The other part of the reference data contain datapoints from areas of high ice concentration for which the MY fraction is unknown. 
-a multi-year ice concentration of 0.5 was found to produce reasonable outputs of the forward model. This dataset can therefore be used as a coherency check, but not to validate the model.
-%We will still attempt to test the forward model for the high ice concentration areas by making an estimate of the MY fraction through a process of trial and error. The idea is to select a location where we have prior information about the MY fraction(...).
+Secondly, the reference data does not contain information about the multi-year ice fraction needed as input in the forward model. For the data set with an ice concentration of 0, the MY fraction is irrelevant. It is therefore possible to validate the forward model for the open water datapoints. For the data set with an ice concentration of 1, a multi-year ice concentration of 0.5 was assumed. This dataset can therefore be used as a coherency check, but not to validate the model. The sensitivity of the brightness temperatures computed by the forward model to a variation in the multi-year ice fraction is discussed in \ref{sec:uncertainties}.
 \newline
 
-Thirdly, the wind speed is given in the %NWP
-reference data as a u-component, v-component, and as a composite of the two. %(comment/question: where u and v denote zonal and meridional directions respectively?)
-To simplify the validation procedure, we used the composite value for the wind speed as the input in the forward model. %(Argumentation!?) (-backscatter as a result of wind speed direction (upwind, downwind, crosswind) sensitive to azimuth angle \cite{Elachi})
-\newline
+Thirdly, as mentioned above, the geophysical parameters given in the reference data were computed from numerical weather predictions, and their uncertainty is not known. In particular, this is also not discussed in \cite{Wink2}. We suspect the error on the cloud liquid water to be especially large. This parameter is increasingly influential towards higher frequency channels, were an error in the prediction would accordingly cause a larger error in the brightness temperatures.
 
-%In order to use the reference data in the forward model it was necesarry to perform unit conversions for 
+\subsubsection{Practical Considerations}
+The wind speed is given in the reference data as a u-component, v-component, and as a composite of the two. %(comment/question: where u and v denote zonal and meridional directions respectively?)
+We chose to use the composite value for the wind speed as the input in the forward model. %(Argumentation!?) (-backscatter as a result of wind speed direction (upwind, downwind, crosswind) sensitive to azimuth angle \cite{Elachi})
 The parameters ``water vapour'' and ``cloud liquid water'', which are given in the columnar units of $\SI{}{kg/m^2}$ in the reference data, were converted to $\SI{}{mm}$, indicating the height of water vapor or cloud liquid water if condensed uniformly across the column. $\SI{1}{kg/m^2}$ corresponds to $\SI{1}{mm}$ \cite{remss}.
 
 
 \subsection{Validation Procedure}
 
-For the data set with an ice concentration of 0, the atmospheric and oceanic parameters were entered into the forward model, and the difference of the modelled brightness temperatures with respect to the reference data was recorded. The reference file has 6988 data points, all of which were used. For the data set with an ice concentration of 1, the atmospheric and oceanic parameters were entered together with a guessed value for the multi-year ice fraction. This value was chosen to be constant for all datapoints to simplify the validation process.
+For the data set with an ice concentration of 0, the atmospheric and oceanic parameters were entered into the forward model, and the difference between the modelled brightness temperatures and the corrected brightness temperatures from the reference data was recorded:
+\[
+e=T_\text{B, modelled} - T_\text{B, reference, corrected}
+\]
+The reference file has 6988 data points, every second of which was used. For the data set with an ice concentration of 1, the atmospheric and oceanic parameters were entered together with guessed values for the multi-year ice fraction of 0, 0.5, and 1, consecutively. The multi-year ice fraction was chosen to be constant for all datapoints to simplify the validation process. Of the 10936 reference data points recorded between October and May, every second point was used.
 
 
 \subsection{Validation Results}
 \label{sec:ForValRes}
 
-The discrepancies for the no ice condition are shown in Figure \ref{fig:for0}, and those for the ice condition are shown in Figure \ref{fig:for1}. Later in this report, the inverse model will be used to develop an estimation of the impact a certain discrepancy in brightness temperature has on the modelled atmospheric and oceanic parameters.
+The discrepancies for the no ice condition are shown in Table \ref{tab:for0}, and those for the ice condition are shown in Tables \ref{tab:for1_0} to \ref{tab:for1_1}.
 
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{} l l l l l l l @{}}
+Channel & 6.93v & 6.93h & 10.65v & 10.65h & 18.70v & 18.70h \\
+\midrule
+Mean & \SI{0.1027}{K} & \SI{-0.2817}{K} & \SI{-1.1832}{K} & \SI{-2.8420}{K} & \SI{3.7785}{K} & \SI{1.8898}{K} \\
+Std. Dev. & \SI{1.4176}{K} & \SI{2.9155}{K} & \SI{2.1227}{K} & \SI{3.7947}{K} & \SI{10.2530}{K} & \SI{12.9650}{K} \\
+\midrule
+\tabularnewline
+\end{tabular}
+\begin{tabular}{@{} l l l l l @{}}
+Channel & 23.80v & 23.80h & 36.50v & 36.50h \\
+\midrule
+Mean & \SI{-1.5822}{K} & \SI{-4.7026}{K} & \SI{-2.2742}{K} & \SI{-5.8099}{K} \\
+Std. Dev. & \SI{3.6383}{K} & \SI{7.1321}{K} & \SI{4.6630}{K} & \SI{10.2386}{K} \\
+\midrule
+\end{tabular}
+\caption{Modelled brigthness temperatures compared to the corrected no-ice dataset}
+\label{tab:for0}
+\end{table}
+
+In addition, histograms were plotted for the error distribution of the no ice condition (only for the channels with the most notable offset), as well as of the ice condition for a multi-year ice concentration of 0.5 (all channels). These are shown in Figures \ref{fig:for0dist} and \ref{fig:for1dist}. The occurence rate is normalized to the number of data points. It can be observed, that the channels for \SI{10.65}{GHz} and higher frequencies have double peaks, which could correspond to the points of no/full ice concentration in the data set. All channels have a negative bias, i.e. the modelled brightness temperatures are smaller than the ones in the reference data. \\
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{} l l l l l l l @{}}
+Channel & 6.93v & 6.93h & 10.65v & 10.65h & 18.70v & 18.70h \\
+\midrule
+Mean & \SI{-18.8904}{K} & \SI{-36.1881}{K} & \SI{-18.8032}{K} & \SI{-30.2216}{K} & \SI{-4.7582}{K} & \SI{-11.3865}{K} \\
+Std. Dev. & \SI{4.9079}{K} & \SI{7.4777}{K} & \SI{5.6295}{K} & \SI{9.6398}{K} & \SI{11.0927}{K} & \SI{14.1847}{K} \\
+\midrule
+\tabularnewline
+\end{tabular}
+\begin{tabular}{@{} l l l l l @{}}
+Channel & 23.80v & 23.80h & 36.50v & 36.50h \\
+\midrule
+Mean & \SI{1.3569}{K} & \SI{-1.4115}{K} & \SI{9.5846}{K} & \SI{9.5860}{K} \\
+Std. Dev. & \SI{14.3928}{K} & \SI{16.7768}{K} & \SI{19.4340}{K} & \SI{20.2949}{K} \\
+\midrule
+\end{tabular}
+\caption{Modelled brigthness temperatures compared to the corrected dataset with an ice concentration of 1, multi-year ice fraction 0}
+\label{tab:for1_0}
+\end{table}
+
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{} l l l l l l l @{}}
+Channel & 6.93v & 6.93h & 10.65v & 10.65h & 18.70v & 18.70h \\
+\midrule
+Mean & \SI{-13.0277}{K} & \SI{-22.3905}{K} & \SI{-16.9252}{K} & \SI{-22.8343}{K} & \SI{-10.8922}{K} & \SI{-15.9716}{K} \\
+Std. Dev. & \SI{5.0466}{K} & \SI{7.5811}{K} & \SI{5.6564}{K} & \SI{9.6501}{K} & \SI{11.0802}{K} & \SI{14.1971}{K} \\
+\midrule
+\tabularnewline
+\end{tabular}
+\begin{tabular}{@{} l l l l l @{}}
+Channel & 23.80v & 23.80h & 36.50v & 36.50h \\
+\midrule
+Mean & \SI{-7.9716}{K} & \SI{-8.9957}{K} & \SI{-6.1945}{K} & \SI{-4.2009}{K} \\
+Std. Dev. & \SI{14.4112}{K} & \SI{16.8180}{K} & \SI{19.4457}{K} & \SI{20.3167}{K} \\
+\midrule
+\end{tabular}
+\caption{Modelled brigthness temperatures compared to the corrected dataset with an ice concentration of 1, multi-year ice fraction 0.5}
+\label{tab:for1_5}
+\end{table}
+
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{} l l l l l l l @{}}
+Channel & 6.93v & 6.93h & 10.65v & 10.65h & 18.70v & 18.70h \\
+\midrule
+Mean & \SI{-7.1651}{K} & \SI{-8.5928}{K} & \SI{-15.0473}{K} & \SI{-15.4471}{K} & \SI{-17.0261}{K} & \SI{-20.5568}{K} \\
+Std. Dev. & \SI{5.1993}{K} & \SI{7.7493}{K} & \SI{5.6848}{K} & \SI{9.6754}{K} & \SI{11.0758}{K} & \SI{14.2130}{K} \\
+\midrule
+\tabularnewline
+\end{tabular}
+\begin{tabular}{@{} l l l l l @{}}
+Channel & 23.80v & 23.80h & 36.50v & 36.50h \\
+\midrule
+Mean & \SI{-17.3001}{K} & \SI{-16.5760}{K} & \SI{-21.9737}{K} & \SI{-17.9878}{K} \\
+Std. Dev. & \SI{14.4461}{K} & \SI{16.8686}{K} & \SI{19.4906}{K} & \SI{20.3633}{K}  \\
+\midrule
+\end{tabular}
+\caption{Modelled brigthness temperatures compared to the corrected dataset with an ice concentration of 1, multi-year ice fraction 1}
+\label{tab:for1_1}
+\end{table}
+
+\begin{comment}
 \begin{figure}[h]
    \centering
    \includegraphics[width=0.9\textwidth]{ValidationForward_SIC0.eps}
@@ -187,18 +276,27 @@ The discrepancies for the no ice condition are shown in Figure \ref{fig:for0}, a
    \caption{Modelled brigthness temperatures compared to the dataset with an ice concentration of 1}
    \label{fig:for1}
 \end{figure}
+\end{comment}
 
 \begin{figure}[h!]
    \centering
    \includegraphics[width=0.9\textwidth]{ValidationForward_SIC0_errordist.eps}
    \caption{Distribution of the errors of the modelled brightness temperatures compared to the no ice dataset; only some channels are shown}
+   \label{fig:for0dist}
+\end{figure}
+
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.9\textwidth]{ValidationForward_SIC1_errordist.eps}
+   \caption{Distribution of the errors of the modelled brightness temperatures compared to the no ice dataset; multi-year ice concentration 0.5}
    \label{fig:for1dist}
 \end{figure}
 
-For the no ice condition, the discrepancies in channels 10.65 h, 18.70 v and h, 23.80 h, and 36.50 h exceed \(\pm\)\SI{50}{K}. A histogram of the error distribution of these channels was plotted, see \mbox{Figure \ref{fig:for1dist}}. The modelled brightness temperatures appear to have an offset of approx. \SI{-8}{K}, with a tendency to a higher offset for the higher frequencies. For the channels 10.65 h and 18.70 v, \SI{90}{\percent} of the errors lie within \(\pm\)\SI{10}{K} off the offset (mean error) of that channel. For the channels 18.70 v and 23.80 h, \SI{90}{\percent} of the errors lie within \(\pm\)\SI{20}{K} off the offset, and for the channel \mbox{36.50 h}, \SI{90}{\percent} of the errors lie within \(\pm\)\SI{30}{K} off the offset.
-\newline
 
-The absolute error of the modelled data compared to the dataset with an ice concentration of 1 appears smaller than for the comparison to the dataset with the no ice condition. However, the minimization of this error was used as the criterion to find the best guess for the multi-year ice concentration. It is therefore not feasible to use this set of errors as a means of describing the accuracy of the forward model.
+
+The forward model is not under all conditions able to reproduce the brightness temperatures expected from the reference data. We do not know, which of the contributions listed in \mbox{section \ref{sec:RefDat}} causes the errors. To further investigate this problem is beyond the scope of this project, and we will therefore limit our use of the model to no ice cases for the following tasks.
+
+
 
 
 
@@ -206,7 +304,6 @@ The absolute error of the modelled data compared to the dataset with an ice conc
 
 
 \clearpage
-%\newpage
 \section{Development of the Inverse Model}
 
 To compute the oceanic and atmospheric parameters from the set of brightness temperatures measured by the satellite radiometer, an inverse model was developed using estimation theory. The inverse model essentially employs the forward model to compute an estimate of the brightness temperatures from an estimate of the geophysical parameters, then compares the estimated brightness temperatures to the measured brightness temperatures, and finally improves the estimate for the geophysical parameters based on the result of the comparison (see figure \ref{fig:block} for a graphical representation). Once the estimated brightness temperatures come close enough to the measured ones, the geophysical parameters last inputted are considered a good estimate and delivered as the result of the inverse modelling. This is explained in more detail in the next subsection.
@@ -279,6 +376,11 @@ S_p =
 For each of the radiometer channels, an uncertainty of \SI{0.4}{K} was assumed. This leads to \SI{0.16}{K^2} for each element of the diagonal of \(S_e\).
 
 
+
+
+
+
+\begin{comment}
 \subsection{Validation Procedure}
 
 The inverse model is intended to be an inversion of the forward model. This means that in comparison to any reference, the inverse model can at most be as accurate as the forward model. The inverse model was therefore validated by comparison to the forward model: brightness temperatures for a given set of geophysical parameters were computed by the forward model, these brightness temperatures were entered into the inverse model to compute an estimate of the geophysical parameters (\(p_e\)), and the estimate was then compared to the original set of geophysical parameters (\(p_o\)).
@@ -297,13 +399,14 @@ By normalizing to the standard deviation \(\sigma\), the dependancy of the indiv
 \newline
 
 The normalization to the standard deviation introduces a systematic error source into the validation of the inverse model, because the same data sets that were used to compute the standard deviation were already used for the optimization of this model. The independence of development and validation is thus violated. However, we consider the data base to be broad enough to neglect this error.
+\end{comment}
 
 \begin{comment}
 - compute new std dev: expect that it becomes larger = the loop creates additional "inconfidence"
 or talk about the distribution of the error? --> histogram with seven lines?
 \end{comment}
 
-
+\begin{comment}
 \subsection{Validation Results}
 
 The error produced by the inverse model was plotted into separate diagrams for the two ice concentrations, see figures \ref{fig:inv0} and \ref{fig:inv1}. Unfortunately, the accuracy appears to depend on the type of input. To investigate the exact reason for the increased uncertainty for the no ice condition, one could divide the datasets into smaller groups of common latitude, season, or magnitude of input parameters, and then record the error distribution for each subset. However, this has not been done so far, and more reference data might be necessary.
@@ -343,6 +446,7 @@ For input data from the no ice condition, some outliers are not being displayed 
 \section{Application of the Inverse Model}
 
 \subsection{Summary: Uncertainties}
+\label{sec:uncertainties}
 
 In section \ref{sec:ForValRes}, the discrepancy between the forward model and the reference data was given in terms of brightness temperatures. To gain a better understanding of the significance of a certain error in brightness temperature, the inverse model was applied to compute the error in the geophysical parameters, which corresponds to adding the root mean square error \(\Delta \ T_\text{B}\) of the brightness temperatures given in figure \ref{fig:for0} to the mean value of the brightness temperatures given in the relevant reference data set.
 
@@ -402,7 +506,7 @@ The computed difference in geophysical parameters, \(\Delta \ p\), comes itself 
 
 \vspace{5cm}
 many interesting and nicely presented findings
-
+\end{comment}
 
 
 
@@ -421,6 +525,7 @@ many interesting and nicely presented findings
 
 \clearpage
 \begin{thebibliography}{99}
+
 	\bibitem[1]{Dorthe} Dorthe Hofman-Bang, Forward algorithm, September 2003. \newline \url{http://www.seaice.dk/exercises/task3/Matlab/FW_funktion2_is.m} \newline [accessed: 18/11/2017]
 	
 	%\bibitem[]{IOMASAreport} Dorthe Hofman-Bang and Leif Toudal, Estimating Ice, Ocean and Atmospheric Parameters from Polar Regions from AMSR-E Microwave Radiometer Measurements, Danish Center for Remote Sensing, Technical University of Denmark. 
@@ -432,6 +537,9 @@ many interesting and nicely presented findings
 	
 	\bibitem[4]{Elachi}  C. Elachi, Introduction to the Physics and Techniques of Remote Sensing. John Wiley and Sons, 1987. (section 6.5+7.3)
 	%(Hennings reference in his radar altimetry slides for wind speed direction discussion)
+
+	\bibitem[5]{secret} Kyle. A. Hilburn and Chelle L. Gentemann, AMSR2 Calibration: Intercomparison of RSS and JAXA Brightness Temperatures, unpublished.
+
 	
 \end{thebibliography}
 
