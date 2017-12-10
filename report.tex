@@ -71,6 +71,11 @@
 
 
 
+
+
+
+
+
 \begin{document}
 
 \begin{titlepage}
@@ -84,9 +89,9 @@
 			%
 			\textbf{\today} \\
 			\vspace{0.1cm} 
-			Maike Fröhner - \\
+			Maike Fröhner - s172033 \\
 			Naya Sophie Rye Jørgensen - s173087 \\
-			Vaidehi Narsingh -  \\
+			Vaidehi Narsingh - s171883 \\
 			\vspace{0.1cm}
 			Supervisor: Leif Toudal Pedersen
 			
@@ -142,16 +147,55 @@
 %\addtocontents{toc}{\setcounter{tocdepth}{2}}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \section{Introduction}
 
-somebody write an introduction \\
+The purpose of the project is to develop and apply a model that retrieves geophysical parameters from brightness temperature measured by the radiometer onboard the AMSR satellite. Atmospheric and oceanic parameters can be obtained in a variety of ways, ranging from in-situ observations through satellite observations using microwave techniques to numerical weather models including analysis and forecasts.
 
-bl.a. mention
-\begin{itemize}
-\item where we get the forward model from and what it does (this will not be explained in the following section)
-\item that we need the forward model to do the inverse model (which was the actual task)
-\end{itemize}
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.6\textwidth]{Flowchart.png}
+   \caption{Naya. please write a caption}
+   \label{fig:flow}
+\end{figure}
+
+An existing climatological model computing the brightness temperatures measured by the radiometer from the geophysical parameters Wind Speed, Water Vapour, Cloud Liquid Water, Sea Surface Temperature, Ice Surface Temperature, Sea Ice Concentration and Multi-year Ice Fraction shall be validatet in the course of this project. We will then use this forward model to develop an inverse model, which will be applied to study geophysical parameters from globally measured brightness temperatures.
+\newline
+
+\begin{comment}
+ (from climatological weather prediction by ESA) computing the Brightness Temperature for 10 AMSR channels (6, 10, 18, 23, 36 GHz H and V polarisation). Furthermore, Using Inverse model, we retrieved the geophysical parameters important for analysing and studying the global hydrological cycle and radiative balance. (from the measured brightness temperature).
+Project describes the forward model is expanded to develop Inverse Model. Furthermore, it includes a section on how the forward and Inverse model has been verified and a section with some real-time application of the use of Inverse algorithm. 
+However, the results presented shows that algorithm is too sensitive to geophysical noise. It is therefore vital to include a priori knowledge of these geophysical parameters in the retrieval process, which has been taken care in our project.
+\end{comment}
+
+The structure of this document is as follows: First, the forward model will be introduced and validated. Then the inverse model will be developed, configured and validated. Then the influence of different radiometric channels and different geophysical parameters is studied. Finally, we conclude with the summary of results obtained by the examples and discussion of results.
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -189,18 +233,17 @@ Sea surface temperature	& T\_ow	& \SI{}{K}	& sst	& \SI{}{K}	\\
 This forward model was validated by comparing its results to reference data from ESA's ``Sea Ice Climate Change Initiative''.
 
 
-
 \subsection{Description of the Reference Data}
 
 The reference data consists of brightness temperatures at the relevant polarizations and frequencies as measured by the AMSR2 radiometer onboard the GCOM-W1 satellite. The measured data is paired with validated sea ice concentrations and numerical weather predictions for the atmospheric and oceanic parameters at the same geocoded locations at near simultaneous time. There are two different data sets: one with an ice concentration of 0, the other one with an ice concentration of 1. The data points of each set cover the entire year 2014. The dataset with the no ice condition covers latitudes between 5 and 73 degrees, and the dataset with an ice concentration of 1 covers latitudes between 78.5 and 87.5 degrees. A description of the dataset can be found in \cite{Wink2}.
 
 \subsubsection{Potential Sources of Errors}
 \label{sec:RefDat}
-When using this reference data package to validate the forward model, several points have to be taken into account: Firstly, the forward model was developed for the AMSR-E instrument. To use the atmospheric and oceanic parameters as input in the forward model in order to compare the output with the AMSR2 measured brightness temperatures, we applied a conversion to these brightness temperatures as suggested in \cite{secret}.
+When using this reference data package to validate the forward model, several points have to be taken into account: Firstly, the forward model was developed for the AMSR-E instrument. To use the atmospheric and oceanic parameters as input in the forward model in order to compare the output with the AMSR2 measured brightness temperatures, we applied a conversion to these brightness temperatures as suggested in \cite{secret}. For the \SI{6.93}{GHz} channel we used the correction for \SI{7}{GHz} throughout the document.
 %The AMSR-E instrument on the NASA satellite EOS Aqua was operational between May 4, 2002 and October 4, 2011, and the AMSR2 instrument mounted on the JAXA satellite GCOM-W1, has been in operation since May 18, 2012. 
 \newline
 
-Secondly, the reference data does not contain information about the multi-year ice fraction needed as input in the forward model. For the data set with an ice concentration of 0, the MY fraction is irrelevant. It is therefore possible to validate the forward model for the open water datapoints. For the data set with an ice concentration of 1, a multi-year ice concentration of 0.5 was assumed. This dataset can therefore be used as a coherency check, but not to validate the model. The sensitivity of the brightness temperatures computed by the forward model to a variation in the multi-year ice fraction is discussed in \ref{sec:uncertainties}.
+Secondly, the reference data does not contain information about the multi-year ice fraction needed as input in the forward model. For the data set with an ice concentration of 0, the MY fraction is irrelevant. It is therefore possible to validate the forward model for the open water datapoints. For the data set with an ice concentration of 1, a multi-year ice concentration of 0.5 was assumed. This dataset can therefore be used as a coherency check, but not to validate the model.
 \newline
 
 Thirdly, as mentioned above, the geophysical parameters given in the reference data were computed from numerical weather predictions, and their uncertainty is not known. In particular, this is also not discussed in \cite{Wink2}. We suspect the error on the cloud liquid water to be especially large. This parameter is increasingly influential towards higher frequency channels, were an error in the prediction would accordingly cause a larger error in the brightness temperatures.
@@ -315,21 +358,6 @@ Std. Dev. & \SI{14.4461}{K} & \SI{16.8686}{K} & \SI{19.4906}{K} & \SI{20.3633}{K
 \label{tab:for1_1}
 \end{table}
 
-\begin{comment}
-\begin{figure}[h]
-   \centering
-   \includegraphics[width=0.9\textwidth]{ValidationForward_SIC0.eps}
-   \caption{Modelled brigthness temperatures compared to the no ice dataset}
-   \label{fig:for0}
-\end{figure}
-
-\begin{figure}[h]
-   \centering
-   \includegraphics[width=0.9\textwidth]{ValidationForward_SIC1.eps}
-   \caption{Modelled brigthness temperatures compared to the dataset with an ice concentration of 1}
-   \label{fig:for1}
-\end{figure}
-\end{comment}
 
 \begin{figure}[h!]
    \centering
@@ -348,6 +376,9 @@ Std. Dev. & \SI{14.4461}{K} & \SI{16.8686}{K} & \SI{19.4906}{K} & \SI{20.3633}{K
 
 
 The forward model is not under all conditions able to reproduce the brightness temperatures expected from the reference data. We do not know, which of the contributions listed in \mbox{section \ref{sec:RefDat}} causes the errors. To further investigate this problem is beyond the scope of this project, and we will therefore limit our use of the model to no ice cases for the following tasks.
+
+
+
 
 
 
@@ -429,10 +460,6 @@ S_p =
 For each of the radiometer channels, an uncertainty of \SI{0.4}{K} was assumed. This leads to \SI{0.16}{K^2} for each element of the diagonal of \(S_e\).
 
 
-
-
-
-
 \subsection{Validation of Inverse Model}
 
 The inverse model is intended to be an inversion of the forward model. This means that in comparison to any reference, the inverse model can at most be as accurate as the forward model. The inverse model was therefore validated by comparison to the forward model: 
@@ -493,7 +520,18 @@ We conclude that the inverse model is very sensitive to high sea surface tempera
 
 \clearpage
 
-	\section{Application of Inverse Model}
+
+
+
+
+
+
+
+
+
+
+
+\section{Application of Inverse Model}
 \subsection{The Effect of Channel Selection on Sea Surface Temperature Retrieval}
 The inverse model is applied to the AMSR2 measured brightness temperatures for the dataset with an ice concentration of 0. The SST parameter is computed for a set of radiometer channel combinations. The goal is to assess which frequencies and polarizations are important for the estimation of the SST parameter.
 \newline
@@ -570,6 +608,56 @@ In table \ref{tab:task3b_2} the diagonal element of S corresponding to the SST p
 \end{table}
 
 The estimated uncertainty is smaller when all channels are used to estimate the SST. Including the 18.70 GHz frequency also improves the inverse model retrieval error on SST.
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Implementation of the Inverse Model on a Time Series of Open Water Data from the North Atlantic}
+
+The inverse model was applied to a time series of brightness temperatures measured at \SI{45}{\degree}N and \SI{45}{\degree}W (see reference data file, the recalibration was applied). Figure \ref{fig:timeseries} shows the seasonal cycle of the sea surface temperature  as computed by the inverse model. 27 outliers below \SI{270}{K} and three outliers above \SI{300}{K} were removed to keep the scale readable in the relevant area. The plot was smoothed by a moving average filter with a span of \SI{10}{}. The ticks on the horizontal axis denote the start of each month.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{TimeSeries.eps}
+	\caption{Seasonal cycle of the sea surface temperature in the North Atlantic}
+	\label{fig:timeseries}
+\end{figure}
+
+The sea surface temperature varies over the year, with the temperature for the months August and September ranging up to \SI{293}{K}. For the months January and February, the temperature is generally lower. In this year (2014), the sea surface was warmer in March and April, followed by a lowpoint of approximately \SI{276}{K} in the beginning of May.
+\newline
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{} l l l l @{}}
+ & \multicolumn{3}{c}{Standard Deviation}
+\tabularnewline
+\cmidrule(l{1mm}){2-4}
+ & tcwv [\SI{}{\kilo\gram\per\square\meter}] & tclw [\SI{}{\kilo\gram\per\square\meter}] & ws [\SI{}{m/s}] \\
+\midrule
+January & \SI{9.0890}{} & \SI{0.1308}{} & \SI{15.6021}{} \\
+July & \SI{4.0613}{} & \SI{0.1055}{} & \SI{16.5609}{} \\
+\midrule
+\end{tabular}
+\caption{Standard deviations of water vapor, cloud liquid water and wind speed in winter and summer}
+\label{tab:jan_jul}
+\end{table}
+
+The standard deviations of water vapor, cloud liquid water and wind speed in January and July were calculated, see Table \ref{tab:jan_jul}. Since the inverse model was found to be less accurate for higher sea surface temparatures, the standard deviation of the parameters measured in the summer may be quite high. It seems, however, that the variability of the wind speed is lower in summer than it is in winter.
+
+
+
+
+
+
+
+
 
 \subsection{Exclusion of Ice Parameters in Model Inversion}
 The inverse model is applied to the AMSR2 measured brightness temperatures for the dataset with an ice concentration of 0. The inverse model is adjusted such that it disregards the ice temperature, the ice concentration and the multi year ice fraction. The goal is to assess whether the remaining parameters, namely wind speed, water vapour, cloud liquid water and sea surface temperature can be estimated with better accuracy and precision, when the ice parameters are excluded.   
@@ -711,27 +799,8 @@ The computed difference in geophysical parameters, \(\Delta \ p\), comes itself 
 
 
 
-\vspace{2.5cm}
 
-\begin{itemize}
-\item interpretation of S matrix
-\end{itemize}
-
-
-\subsection{Practical Aspects}
-
-\begin{itemize}
-\item restriction of number of iterations
-\end{itemize}
-
-
-
-
-
-
-\vspace{5cm}
-many interesting and nicely presented findings
-
+\end{comment}
 
 
 
@@ -739,12 +808,11 @@ many interesting and nicely presented findings
 \section{Conclusion}
 
 \begin{itemize}
-\item comparison to more data; especially with information about my to validate/adjust inverse model
-\item different Sp, p0 for different latitudes? % upper boundary to Sp values: can only be large, when M large
+\item remember people that we used the ``wrong'' correction parameter for the 6.93 channel
+\item forward model only working for no ice
+\item inverse model only working for not to high sea surface temperatures
 \end{itemize}
-\
 
-\end{comment}
 
 
 
