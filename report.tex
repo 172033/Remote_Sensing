@@ -435,32 +435,29 @@ Std. Dev. & \SI{1.0443}{} & \SI{0.0499}{} & \SI{0.0066}{} & \SI{0.5919}{} & \SI{
    \label{fig:sstError}
 \end{figure}
 
-We conclude that the inverse model is very sensible to high sea surface temperatures and atmospheric water contents, but performs satisfactory otherwise.
-
-
-
-
-
-
-
-\begin{comment}
+We conclude that the inverse model is very sensitive to high sea surface temperatures and atmospheric water contents, but performs satisfactory otherwise.
 
 \clearpage
-\section{Application of Inverse Model}
 
+	\section{Application of Inverse Model}
 \subsection{The Effect of Channel Selection on Sea Surface Temperature Retrieval}
 The inverse model is applied to the AMSR2 measured brightness temperatures for the dataset with an ice concentration of 0. The SST parameter is computed for a set of radiometer channel combinations. The goal is to assess which frequencies and polarizations are important for the estimation of the SST parameter.
 \newline
 
-The ten channels in the inverse model can each individually be excluded by setting the elements of the \(S_e\) covariance matrix to a large value, here  a value of 10000 is used. A large value in a selected diagonal element of \(S_e\) correspond to a low confidence in the accuracy of the channel represented by that diagonal element, and consequently little weight is assigned to this channel during the inversion. 
+The ten channels in the inverse model can each individually be excluded by setting the elements of the \(S_e\) covariance matrix to a large value, here is used a value of 10000. A large value in a selected diagonal element of \(S_e\) correspond to a low confidence in the accuracy of the channel represented by that diagonal element, and consequently little weight is assigned to this channel during the inversion. 
 \newline
 
-The inverse model is applied using the channel combinations listed in column 1 of table \ref{tab:task3b_1} with the brightness temperatures of the SIC=0 dataset as input. The SIC=0 reference file has 6988 data points, all of which were used. The reference SST is subtracted from computed SST and a distribution of the absolute error is plotted in figure \ref{fig:task3b}, where the occurence rate has been normalized by the number of data points.  
-\newline 
+The inverse model is applied using the channel combinations listed in column 1 of table \ref{tab:task3b_1} with the brightness temperatures of the SIC=0 dataset as input. The SIC=0 reference file has 6988 data points, all of which were used. The reference SST, \(SST_reference\), is subtracted from the estimated SST, \(SST_estimate\), in the following way:
+
+\begin{equation*}
+e = p_\text{estimate} - p_\text{reference}
+\end{equation*} 
+
+The distribution of the absolute error is plotted in figure \ref{fig:task3b}, where the occurence rate has been normalized by the number of data points.   
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.0\textwidth]{task3b.eps}
+	\includegraphics[width=0.9\textwidth]{task3b.eps}
 	\caption{Distribution of absolute error between the modelled SST and the SIC0 reference SST for a set of channel selections.}
 	\label{fig:task3b}
 \end{figure}
@@ -470,7 +467,7 @@ The mean and standard deviation of the absolute error between the computed SST f
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{@{}p{8cm}p{3cm}p{3cm}@{}}
+	\begin{tabular}{@{}p{9cm}p{3cm}p{3cm}@{}}
 		Channel selection [GHz] & Mean [K] & Std. Dev. [K] 
 		\tabularnewline
 		\midrule
@@ -495,32 +492,119 @@ S =
 \label{S_matrix}
 \end{equation*}
 
-The terms in eq. \ref{S_matrix} is also defined in section 3.1. If the uncertainties on the starting values for the geophysical parameters in the \(S_p\) matrix are large, it will carry less weight in the iteration and the result of the iteration will be dominated by the measurement error of the radiometer and vice versa. The S matrix is a 7 by 7 matrix in which the diagonal elements are indicative of the inverse model retrieval error on the geophysical parameters. 
+The terms in eq. \ref{S_matrix} is defined in section 3.1. If the uncertainties on the starting values for the geophysical parameters in the \(S_p\) matrix are large, it will carry less weight in the iteration and the result of the iteration will be dominated by the measurement error of the radiometer and vice versa. The S matrix is a 7 by 7 matrix in which the diagonal elements are indicative of the inverse model retrieval error on the geophysical parameters. 
 \newline
 
-In table \ref{tab:task3b_2} the diagonal element of S corresponding to the SST parameter is listed for each channel selection. It is important to note, that the S matrix retrieval error on the SST originates from the inversion and does not take into account any error propagating from the forward model. The S matrix retrieval error is also based on the assumption that the uncertainties \(S_p\) and \(S_e\) are a good estimate of the true values. The radiometer measurement error has been fixed to a set value of 0.4 K for all channels, but it may be reasonable to assume that these measurements uncertainties would vary in reality.  
+In table \ref{tab:task3b_2} the diagonal element of S corresponding to the SST parameter is listed for each channel selection. It is important to note, that the S matrix retrieval error on the SST originates from the inversion and does not take into account any error propagating from the forward model. The S matrix retrieval error is also based on the assumption that the uncertainties \(S_p\) and \(S_e\) are a good estimate. 
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{@{}p{11cm}p{3cm}@{}}
-		Channel selection & Retrieval error 
+		Channel selection & Retrieval std. dev. 
 		\tabularnewline
 		\midrule
-		6.93 H+V, 10.65 H+V, 18.70 H+V, 23.80 H+V, 36.50 H+V & 1.5762	\\
-		6.93 H+V	& 6.7880	\\
-		6.93 H+V, 10.65 H+V	& 6.4247	\\
-		6.93 H+V, 10.65 H+V, 18.70 H+V	& 2.1514		\\
-		6.93 H+V, 18.70 H+V	& 2.7064	\\
+		6.93 H+V, 10.65 H+V, 18.70 H+V, 23.80 H+V, 36.50 H+V & 1.2555	\\
+		6.93 H+V	& 2.6054	\\
+		6.93 H+V, 10.65 H+V	& 2.5347	\\
+		6.93 H+V, 10.65 H+V, 18.70 H+V	& 1.4668		\\
+		6.93 H+V, 18.70 H+V	& 1.6451	\\
 		\midrule
 	\end{tabular}
 	\caption{Retrieval error computed from S matrix of SST parameter for different channel selections.}
 	\label{tab:task3b_2}
 \end{table}
 
-The retrieval error is smaller when all channels are applied to estimate the SST. By including the 18.70 GHz frequency the inverse model retrieval error on SST is improved.
-\end{comment}
+The retrieval error is smaller when all channels are used to estimate the SST. Including the 18.70 GHz frequency also improves the inverse model retrieval error on SST.
+
+\subsection{Geophysical Parameter Reduction}
+The inverse model is applied to the AMSR2 measured brightness temperatures for the dataset with an ice concentration of 0. The inverse model is adjusted such that it disregards the ice temperature, the ice concentration and the multi year ice fraction. The goal is to assess whether the remaining parameters, namely wind speed, water vapour, cloud liquid water and sea surface temperature can be estimated with better accuracy and precision, when the ice parameters are excluded.   
+
+\subsubsection{Reduction Procedure}
+In the first case, no change is made to the inverse model and the ice parameters are included in the inversion process. In the second case the ice parameters are excluded by adjusting the starting values in \(p_0\) and the uncertainties in \(S_p\). The initial guesses for ice temperature, ice concentration and multi-year ice fraction are set to zero in \(p_0\). The diagonal elements of the \(S_p\) matrix corresponding to the ice parameters are set to values near zero, here is used a value of \(10^{-7}\). The diagonal elements in \(S_p\) cannot be exactly zero, as this will prevent the inversion of \(S_p\).  
+\newline
+
+The inverse model is applied using the brightness temperatures of the SIC=0 dataset as input. The SIC=0 reference file has 6988 data points, all of which were used. The reduced number of geophysical parameters are computed for the first case where we include the ice parameters in \(p_0\) and for the second case where we exclude the ice paramters in \(p_0\) and adjust \(S_p\). The reference values for the geophysical parameters, \(p_{reference}\), corresponding to the brightness temperatures used as input in the inverse model are subtracted from the computed parameters \(p_{estimate}\) for both cases in the following way:
+
+\begin{equation*}
+e = p_\text{estimate} - p_\text{reference}
+\end{equation*} 
+
+Distributions of the absolute error are plotted for wind speed, water vapour, cloud liquid water and sea surface temprature in figures \ref{fig:task6_fig_1} to \ref{fig:task6_fig_4}, where the occurence rate has been normalized by the number of data points.   
+\newline
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{task6_fig_1.eps}
+	\caption{Distribution of absolute error between estimated and the SIC0 reference wind speed for the case where the ice parameters are included in the inversion and for the case where the ice parameters are excluded from the inversion.}
+	\label{fig:task6_fig_1}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{task6_fig_2.eps}
+	\caption{Distribution of absolute error between estimated and the SIC0 reference water vapour for the case where the ice parameters are included in the inversion and for the case where the ice parameters are excluded from the inversion.}
+	\label{fig:task6_fig_2}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{task6_fig_3.eps}
+	\caption{Distribution of absolute error between estimated and the SIC0 reference cloud liquid water for the case where the ice parameters are included in the inversion and for the case where the ice parameters are excluded from the inversion.}
+	\label{fig:task6_fig_3}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{task6_fig_4.eps}
+	\caption{Distribution of absolute error between estimated and the SIC0 reference sea surface temperature for the case where the ice parameters are included in the inversion and for the case where the ice parameters are excluded from the inversion.}
+	\label{fig:task6_fig_4}
+\end{figure}
+
+The mean and standard deviation of the absolute error between the estimated values and reference values for the two cases are shown in table \ref{tab:task6_tab_1}. In table \ref{tab:task6_tab_1} it can be seen that the precision with which the wind speed, water vapour, cloud liquid water and SST can be retrieved varies greatly from one case to the other. When the ice parameters are excluded, all the remaining parameters can be determined with better precision and arguably also better accuracy. The inverse model is more sensitive to changes in the ice parameters, which causes the model to overshoot in the iteration process. By excluding the ice parameters, the accuracy and precision of the remaining parameters are improved. This is especially the case for wind speed and sea surface temperature.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{@{}p{4.0cm} p{2.4cm}p{2.4cm}p{2.4cm}p{2.4cm}@{}}
+		\tabularnewline
+		& \multicolumn{2}{c}{Including ice in inversion} & \multicolumn{2}{c}{Excluding ice from inversion}
+		\tabularnewline
+		\cmidrule(r{1em}){2-3} \cmidrule(l{1em}){4-5}
+		& Mean & Std. Dev. & Mean & Std. Dev.
+		\tabularnewline
+		\midrule
+		Wind speed	& 7.2348 m/s	& 16.2633 m/s		& 1.4218 m/s	& 2.2110 m/s	\\
+		Water vapour		& -2.0860 mm	& 5.3944 mm		& -1.4727 mm	& 	4.1543 mm	\\
+		Cloud liquid water		& -0.0214 mm	& 0.2105 mm	& 0.0520 mm	& 0.1438 mm	\\
+		Sea surface temperature	& -5.6562 K	& 18.7487 K	& -2.1641 K	& 3.0336 K	\\
+		\midrule
+	\end{tabular}
+	\caption{Atmospheric and oceanic parameters entered into the forward model}
+	\label{tab:task6_tab_1}
+\end{table}
 
 
+\subsubsection{Inverse Model Retrieval Error}
+The error on the geophysical parameters as a result of the inversion process can be determine by computing the S matrix. In table \ref{tab:task6_tab_1} the diagonal element of S corresponding to the geophysical parameters are listed.
+\newline 
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{@{}p{4.0cm}p{3.3cm}p{3.3cm}@{}}
+		\tabularnewline
+		& \multicolumn{1}{c}{Including ice in inversion} & \multicolumn{1}{c}{Excluding ice from inversion}
+		\tabularnewline
+		\cmidrule(r{1em}){2-2} \cmidrule(l{1em}){3-3}
+		& Retrieval std. dev. & Retrieval std. dev.
+		\tabularnewline
+		\midrule
+		Wind speed	& 1.1715 m/s	& 0.3127 m/s		\\
+		Water vapour		& 0.2528 mm	& 0.1997 mm		\\
+		Cloud liquid water		& 0.0211 mm	& 0.0101 mm	 \\
+		Sea surface temperature	& 1.2555 K	& 0.8971 K 	\\
+		\midrule
+	\end{tabular}
+	\caption{Atmospheric and oceanic parameters entered into the forward model}
+	\label{tab:task6_tab_2}
+\end{table}
+
+The retrieval error on the geophysical parameters are smaller when the inverse model is adjusted to disregards the ice parameters.
 
 
 
