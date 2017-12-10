@@ -381,33 +381,71 @@ For each of the radiometer channels, an uncertainty of \SI{0.4}{K} was assumed. 
 
 \subsection{Validation of Inverse Model}
 
-The inverse model is intended to be an inversion of the forward model. This means that in comparison to any reference, the inverse model can at most be as accurate as the forward model. The inverse model was therefore validated by comparison to the forward model: brightness temperatures for a given set of geophysical parameters were computed by the forward model, these brightness temperatures were entered into the inverse model to compute an estimate of the geophysical parameters (\(p_e\)), and the estimate was then compared to the original set of geophysical parameters (\(p_o\)).
-\newline
-
-The reference data sets used to validate the forward model were used as a generic source of geophysical parameters to be inputted into the forward model. They were not used as a reference to compare modelled results to!
-\newline
-
-The error of the inverse model is described as follows:
-
+The inverse model is intended to be an inversion of the forward model. This means that in comparison to any reference, the inverse model can at most be as accurate as the forward model. The inverse model was therefore validated by comparison to the forward model: 
+\begin{itemize}
+\item for a given set of geophysical parameters, brightness temperatures were computed by the forward model
+\item these brightness temperatures were entered into the inverse model, which computed an estimate of the geophysical parameters (\(p_\text{estimated}\))
+\item the estimate was then compared to the original set of geophysical parameters (\(p_\text{originial}\)), the error being described as follows:
+\end{itemize}
 \begin{equation*}
-e = p_\text{e} - p_\text{o}
+e = p_\text{estimated} - p_\text{original}
 \end{equation*}
 
-The error produced by the inverse model is described in Table \ref{tab:errorinv}.
+\ \\
+The reference data sets used to validate the forward model were used as a generic source of geophysical parameters to be inputted into the forward model. They were not used as a reference to compare modelled results to! Unfortunately, the data sets contain some outliers, which cause the inverse model to not converge. We therefore restricted the number of iterations to 10 to be able to automatically run the inversion model on all data points. The results of the inverse model did not improve for a higher number of iterations. 
+\newline
 
-\begin{table}[h!]
+Using all data points of the no ice data file, the inverse model produces the error described in Table \ref{tab:errorinv}. A closer investigation revealed that the error does not arise evenly distributed over the used input data points: for high sea surface temperatures, which come together with high amounts of liquid and gaseous water in the atmosphere, the error can become very large. This is exemplarily illustrated in Figure \ref{fig:sstError}, where the input sea surface temperature (\( p_\text{original} \)) is shown together with the error on the sea surface temperature (\( e \)) produced by the inverse model.
+\newline
+
+\begin{table}[h]
 \centering
-\begin{tabular}{@{} l l l l l l l @{}}
-Parameter & ws [\SI{}{m/s}] & tcwv [\SI{}{\kilo\gram\per\square\meter}] & tclw [\SI{}{\kilo\gram\per\square\meter}] & sst [\SI{}{K}] & skt [\SI{}{K}] & ci [fraction] \\
+\begin{tabular}{@{} l l l l l l @{}}
+Parameter & ws [\SI{}{m/s}] & tcwv [\SI{}{\kilo\gram\per\square\meter}] & tclw [\SI{}{\kilo\gram\per\square\meter}] & sst [\SI{}{K}] & ci [fraction] \\
 \midrule
-Mean & \SI{-0.3915}{} & \SI{0.0927}{} & \SI{0.0013}{} & \SI{-1.2479}{} & \SI{-20.0575}{} & \SI{0.0236}{} \\
-Std. Dev. & \SI{6.4720}{} & \SI{5.5608}{} & \SI{0.0798}{} & \SI{16.6951}{} & \SI{20.4976}{} & \SI{0.4234}{} \\
+Mean & \SI{-0.3915}{} & \SI{0.0927}{} & \SI{0.0013}{} & \SI{-1.2479}{} & \SI{0.0236}{} \\
+Std. Dev. & \SI{6.4720}{} & \SI{5.5608}{} & \SI{0.0798}{} & \SI{16.6951}{} & \SI{0.4234}{} \\
 \midrule
 \end{tabular}
 \caption{Estimated parameters compared to the original parameters}
 \label{tab:errorinv}
 \end{table}
 
+When the input data is restricted to points with a sea surface temperature below \SI{283}{K}, the accuracy of the inverse model improves. This excludes 2492 data points. The remaining error is described in Table \ref{tab:errorinvrest}.
+\newline
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{} l l l l l l @{}}
+Parameter & ws [\SI{}{m/s}] & tcwv [\SI{}{\kilo\gram\per\square\meter}] & tclw [\SI{}{\kilo\gram\per\square\meter}] & sst [\SI{}{K}] & ci [fraction] \\
+\midrule
+Mean & \SI{-0.5640}{} & \SI{0.0216}{} & \SI{0.0011}{} & \SI{-0.5747}{} & \SI{0.0065}{} \\
+Std. Dev. & \SI{1.0443}{} & \SI{0.0499}{} & \SI{0.0066}{} & \SI{0.5919}{} & \SI{0.0131}{} \\
+\midrule
+\end{tabular}
+\caption{Estimated parameters compared to the original parameters, with the input data restricted to points with a sea surface temperature below \SI{283}{K}}
+\label{tab:errorinvrest}
+\end{table}
+
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.9\textwidth]{ValidationInverse_SIC0_sstError.eps}
+   \caption{The error of the inverse model (red) can become very large for high sea surface temperatures (blue).}
+   \label{fig:sstError}
+\end{figure}
+
+We conclude that the inverse model is very sensible to high sea surface temperatures and atmospheric water contents, but performs satisfactory otherwise.
+
+
+
+
+
+
+
+\begin{comment}
+
+\clearpage
 \section{Application of Inverse Model}
 
 \subsection{The Effect of Channel Selection on Sea Surface Temperature Retrieval}
@@ -480,7 +518,7 @@ In table \ref{tab:task3b_2} the diagonal element of S corresponding to the SST p
 \end{table}
 
 The retrieval error is smaller when all channels are applied to estimate the SST. By including the 18.70 GHz frequency the inverse model retrieval error on SST is improved.
-
+\end{comment}
 
 
 
