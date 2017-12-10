@@ -70,23 +70,6 @@ end
 
 % ***** PLOT THE ERROR FOR EACH CHANNEL *****
 
-x = linspace(1,10,10);
-
-
-% f1=figure;
-% hold on;
-% for i=1:nor
-%     scatter(x, E0(i,:), 'filled')
-% end
-% hold off;
-% 
-% set(gcf,'units','centimeters','position',[5,5,22,12]);
-% 
-% ylabel('Absolute error in K');
-% xlim([0.5 10.5]);
-% xticklabels({'6.93 v','6.93 h','10.65 v','10.65 h','18.70 v','18.70 h','23.80 v','23.80 h','36.50 v','36.50 h'});
-% xlabel('Channels of the Radiometer');
-% title('Difference of computed and referenced brightness temperatures, SIC=0');
 
 e1=histc(E0(:,1),(-40:40))/nor;
 e2=histc(E0(:,2),(-40:40))/nor;

@@ -8,13 +8,10 @@ clear;
 nor = 6988;
 
 SIC0 = csvread('SIC0_noHeader.csv', 1, 4, [1 4 nor 38]);
-%SIC0_LAT = csvread('SIC0_noHeader.csv', 1, 1, [1 1 nor 1]);
 
 % guess for MY ice fraction:
 my = 0.5;
 
-% standard deviation
-%dev = [3.0474 7.8830 0.0748 4.7475 9.9321 1 1];
 
 % ***** STORE nor ROW VECTORS P IN A MATRIX *****
 
@@ -50,12 +47,9 @@ for i=1:nor
 end
 
 
-% ***** OPTIONAL: REMOVE LINES FROM CLOSE TO THE EQUATOR AND OUTLIERS *****
+% ***** OPTIONAL: REMOVE LINES WITH HIGH SST *****
 
-lat = 40;
 rem = 0; % initiate no. of removed lines
-th = [5 1 0.1 4 25 0.1 1]; % set outliers threshold
-out = 0; % initiate no. of removed lines
 
 for i=1:nor
    if SIC0(i,10)>283
@@ -64,14 +58,7 @@ for i=1:nor
    end
 end
 
-% for i=1:nor
-%    if sum(abs(E0(i,:))<th)~=7
-%        E0(i,:)=NaN;
-%        out = out+1;
-%    end
-% end
-
-rem
+rem % output no. of removed lines
 
 % ***** PLOT THE ERROR FOR EACH PARAMETER *****
 
