@@ -21,7 +21,7 @@
 \usepackage{verbatim}			% macht die "comment-Umgebung"
 \usepackage[hidelinks]{hyperref}
 \usepackage{setspace}
-
+\usepackage{epstopdf}
 
 
 
@@ -408,7 +408,78 @@ Std. Dev. & \SI{6.4720}{} & \SI{5.5608}{} & \SI{0.0798}{} & \SI{16.6951}{} & \SI
 \label{tab:errorinv}
 \end{table}
 
+\section{Application of Inverse Model}
 
+\subsection{The Effect of Channel Selection on Sea Surface Temperature Retrieval}
+The inverse model is applied to the AMSR2 measured brightness temperatures for the dataset with an ice concentration of 0. The SST parameter is computed for a set of radiometer channel combinations. The goal is to assess which frequencies and polarizations are important for the estimation of the SST parameter.
+\newline
+
+The ten channels in the inverse model can each individually be excluded by setting the elements of the \(S_e\) covariance matrix to a large value, here  a value of 10000 is used. A large value in a selected diagonal element of \(S_e\) correspond to a low confidence in the accuracy of the channel represented by that diagonal element, and consequently little weight is assigned to this channel during the inversion. 
+\newline
+
+The inverse model is applied using the channel combinations listed in column 1 of table \ref{tab:task3b_1} with the brightness temperatures of the SIC=0 dataset as input. The SIC=0 reference file has 6988 data points, all of which were used. The reference SST is subtracted from computed SST and a distribution of the absolute error is plotted in figure \ref{fig:task3b}, where the occurence rate has been normalized by the number of data points.  
+\newline 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{task3b.eps}
+	\caption{Distribution of absolute error between the modelled SST and the SIC0 reference SST for a set of channel selections.}
+	\label{fig:task3b}
+\end{figure}
+
+The mean and standard deviation of the absolute error between the computed SST for different channel selections and the reference data SST is shown in table \ref{tab:task3b_1}. In table \ref{tab:task3b_1} it can be seen that the inclusion of the 10.65 GHz channel results in a larger deviation from the reference. The optimal channel combination is obtained when combining 6.93 and 18.70 GHz including both polarisations. When evaluating the 6.93 and 18.70 GHz channels individually, the 6.93 GHz channel yields the best result.
+\newline 
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{@{}p{8cm}p{3cm}p{3cm}@{}}
+		Channel selection [GHz] & Mean [K] & Std. Dev. [K] 
+		\tabularnewline
+		\midrule
+		6.93 H+V, 10.65 H+V, 18.70 H+V, 23.80 H+V, 36.50 H+V & -5.6562 &  18.7487	\\
+		6.93 H+V	& -3.7875	&  3.0815 \\
+		6.93 H+V, 10.65 H+V	& -6.3362	&  6.5668 \\
+		6.93 H+V, 10.65 H+V, 18.70 H+V	& -2.6071 &	5.2244	\\
+		6.93 H+V, 18.70 H+V	& -1.5470 & 2.7493	\\
+		18.70 H+V	& -10.7803 & 8.8044 \\
+		\midrule
+	\end{tabular}
+	\caption{Mean and standard deviation of the absolute error between the computed SST for different channel selections and the reference data SST.}
+	\label{tab:task3b_1}
+\end{table}
+
+\subsubsection{Inverse Model Retrieval Error}
+The error on the SST parameter as a result of the inversion process can be determine by computing the S matrix. The S matrix is integrated in the inversion scheme and defined as: 
+
+\begin{equation*}
+S =
+\Big(S_p^{-1} + M_n^T S_e^{-1} M_n \Big)^{-1}  
+\label{S_matrix}
+\end{equation*}
+
+The terms in eq. \ref{S_matrix} is also defined in section 3.1. If the uncertainties on the starting values for the geophysical parameters in the \(S_p\) matrix are large, it will carry less weight in the iteration and the result of the iteration will be dominated by the measurement error of the radiometer and vice versa. The S matrix is a 7 by 7 matrix in which the diagonal elements are indicative of the inverse model retrieval error on the geophysical parameters. 
+\newline
+
+In table \ref{tab:task3b_2} the diagonal element of S corresponding to the SST parameter is listed for each channel selection. It is important to note, that the S matrix retrieval error on the SST originates from the inversion and does not take into account any error propagating from the forward model. The S matrix retrieval error is also based on the assumption that the uncertainties \(S_p\) and \(S_e\) are a good estimate of the true values. The radiometer measurement error has been fixed to a set value of 0.4 K for all channels, but it may be reasonable to assume that these measurements uncertainties would vary in reality.  
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{@{}p{11cm}p{3cm}@{}}
+		Channel selection & Retrieval error 
+		\tabularnewline
+		\midrule
+		6.93 H+V, 10.65 H+V, 18.70 H+V, 23.80 H+V, 36.50 H+V & 1.5762	\\
+		6.93 H+V	& 6.7880	\\
+		6.93 H+V, 10.65 H+V	& 6.4247	\\
+		6.93 H+V, 10.65 H+V, 18.70 H+V	& 2.1514		\\
+		6.93 H+V, 18.70 H+V	& 2.7064	\\
+		\midrule
+	\end{tabular}
+	\caption{Retrieval error computed from S matrix of SST parameter for different channel selections.}
+	\label{tab:task3b_2}
+\end{table}
+
+The retrieval error is smaller when all channels are applied to estimate the SST. By including the 18.70 GHz frequency the inverse model retrieval error on SST is improved.
 
 
 
